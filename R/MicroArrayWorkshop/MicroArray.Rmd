@@ -1,0 +1,214 @@
+---
+title: "MicroArray_Workshop"
+output: html_document
+date: "2024-01-31"
+Author: "Kimia"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#Install required packages
+
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("limma")
+
+library(BiocManager)
+library(limma)
+library(GEOquery)
+library(pheatmap)
+library(ggplot2)
+library(affy) #Has Normalization Algorithms
+```
+
+
+```{r}
+#Download the data directly from GEO through getGEO
+
+#GSE Matrix True means we want the Matrix Format
+#Destination Directory is where we want to save the data
+#getGPL is set to false because we only want to work with one GPL AKA One Platform
+#Might have to set slashes to '/' rather than '\'
+gsetRAW=getGEO("GSE95095", GSEMatrix = T, destdir = "/Users/jannadurai/Library/CloudStorage/OneDrive-Personal/Documents/Nexus/Informatics/B528-BMD/R/MicroArrayWorkshop/Data", getGPL = F )
+class(gsetRAW)
+#The gsetRAW comes as a list, and then has a folder inside
+gset=gsetRAW[[1]]
+gset
+class(gset)
+dim(gset)
+View(gset)
+
+#Another option is to download the data file directly
+#Just remember that the file has extraneous data and needs to be removed
+#Only keep the data between the series matrix start and end
+#i.e.  !series_matrix_table_begin
+
+
+#The best option is to get the original cell files and process the data yourself in case you'd like to work across multiple datasets
+```
+
+```{r}
+#Use this function to extract the expression matrix of your counts
+ex=exprs(gset)
+class(ex)
+```
+
+```{r}
+#log2-transform normalized probe expression data
+#They must all be log2 transformed before continuing
+#First check if your data has not been already log-2 transformed.
+
+#Transformed
+#Check Max and Min to See if the Data is in a 'Rational' Range
+max(ex)
+min(ex) 
+
+#[1] 16.7636
+#[1] 4.905
+# Reasonable, so we know it is already log2 transformed
+# If the max is something like 1000+
+
+#Normalize probe-level expression data using MAS-5 algorithm
+#Get and log2-transform normalized probe expression data
+
+########################################################
+#If we want to use the MAS-5 to normalize
+#Use the MAS-5 from the 'affy' package, which is designed for affymetrix microarray technology
+
+#RMA is another normalization algorithim which is faster
+
+#Note these also should have batch correction features for multiple datasets
+#I.e. lets say you have two different datasets from two different experimenets
+#One way is to normalize each individually and then merge, and then normalize all
+
+# MAS-5 -> Used for normalization
+# my god. go watch a movie while this is running. 
+#normalized.mas5 = mas5(affy.data)
+
+#Read about Quantile Normalization
+
+# non-log-transformed 
+#probe_expression.nologs = exprs(normalized.mas5)
+
+# log2-transformed
+#probe_expression.log2 = log(probe_expression.nologs, 2)
+
+```
+
+
+
+
+
+```{r}
+#Visualize the State of the Expression Matrix
+boxplot(ex)
+
+#Note that the medians are all centralized around one line, so likely no need to normalize
+#If Necessary to Normalize, can go into Limma and use a Normalization
+```
+
+
+
+
+```{r}
+
+#Next step is to define classes of data
+#We should know about the data prior to continuing
+#I.e. we know that there are 3 classes from the GEO Entry
+
+#However, we can also get all the titles of the samples to get a picture of what's going on
+gset$title
+
+#Now that we know there are 3 classes, Crohn's Involved, Crohn's Uninvolved, and Normal, we can split it into three classes
+
+#Define classes of the data
+cl = c(rep("CD", 24), rep("CDU", 24), rep("Normal", 12))
+cl
+
+```
+
+
+
+```{r}
+#You can create a heat map to make sure if there is a correlation within your data
+pheatmap(cor(ex))
+pheatmap(cor(ex), labels_col = cl, labels_row = cl)
+```
+
+
+```{r}
+# create & fit limma linear model
+
+gset$class=cl
+
+designMatrix=model.matrix(~ class+0, gset)
+#Rows indicate all the samples
+#Columns indicate which groupings
+designMatrix
+
+#Now we should fit our model to the GSE
+fit= lmFit(gset, designMatrix)
+
+#Contrast
+fit2=contrasts.fit(fit, makeContrasts(classCD-classNormal, levels = designMatrix))
+
+#statistical test on fitted expression values
+#The eBayed() function computes one more useful statistic
+#The moderated F-statistic (f) comines the t-statistics for all the contrasts for each gene into an overall test of significance for that gene
+fit2=eBayes(fit2, 0.01)
+
+```
+
+
+```{r}
+#Now our Gene expressions are created
+#Now we want to see the top genes
+
+#In this case, we want to see all rows, so we did nrow
+GE=topTable(fit2, number = nrow(ex), sort.by = "logFC")
+#[1] 29377 6
+#All the Genes
+dim(GE)
+
+#Display the Table
+#This should be the Same as the Online GEO2R Data Viewer
+#https://www.ncbi.nlm.nih.gov/geo/geo2r/?acc=GSE95095
+GE
+
+```
+
+
+```{r}
+#See upregulated and downregulated genes
+
+#These constraints should be defined by you, the analzyer
+#We want to see genes that are double and above, remember this is log2, so
+UP=GE[which(GE$logFC>1 & GE$adj.P.Val < 0.05), ]
+dim(UP)
+Down=GE[which(GE$logFC<-1 & GE$adj.P.Val < 0.05), ]
+dim(Down)
+```
+
+
+
+```{r}
+# Install and load required packages if not already installed
+# install.packages(c("limma", "ggplot2"))
+library(limma)
+library(ggplot2)
+
+# Assuming 'fit2' is your linear model and 'GE' is your topTable
+# Make sure 'fit2' and 'GE' are appropriately defined in your script
+
+
+
+```
+
+
+```{r}
+
+```
