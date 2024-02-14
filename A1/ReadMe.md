@@ -16,22 +16,15 @@ File Location: Stored within the data folder.
 * matrix1.txt
 * matrix2.txt
 
-Location: 
-Script Description
-This script reads matrices of microRNA expressions from .tsv files, processes these matrices to generate correlation matrices, and then creates heatmaps for these correlation matrices. It includes functions to read and process the input data, calculate the correlation matrix, generate a heatmap from the correlation matrix, and save the heatmap to the output folder. Additionally, it calculates the Pearson correlation coefficient of correlations between matrices.
-
 __Output Files:__
 
 Files: Heatmaps of the correlation matrices of the respective input matrices.
 Format: PNG images.
 Location: Stored within the output folder.
 
-
 __Usage:__
 
 To use this script, ensure all dependencies are installed and place your .tsv input files in the data folder. Run the script, and it will automatically generate heatmaps for each input file and save them in the output folder. The Pearson correlation coefficients of the correlations are printed to the console.
-
-
 
 __Script:__
 The python script reads gene expression quantified in RPKM of microRNAs among various classes of Cancer from the 'matrix1' and 'matrix2' data files. It then generates a 12x12 pearson correlation matrix and a coinciding heatmap for each respective file. Finally, it then compares matrix 1 and matrix 2 with each other using a pearson correlation. 
