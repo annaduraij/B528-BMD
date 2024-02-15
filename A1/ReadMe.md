@@ -1,30 +1,48 @@
-**_A1 - Correlation Matrices_**
-**_Author: Jay Annadurai_**
-**_Date: 14 February 2024_**
-**_Programming Language & Version: Python 3.11_**
+# A1 - Matrices
 
-__Dependencies__
-Pandas: For data reading and manipulation.
-Seaborn: For advanced data visualization, specifically for generating heatmaps.
-Matplotlib: For basic data visualization.
-Numpy: For computation.
+## Script Information
 
-__Input Data__
-Files: Gene expressions quantified in RPKM of microRNAs among various classes of Cancer as Matrices
-Format: Tab-Separated Value Files
-File Location: Stored within the data folder.
-* matrix1.txt
-* matrix2.txt
+- **Author**: Jay Annadurai
+- **Date**: 14 February 2024
+- **Programming Language & Version**: Python 3.11
+- **Project Version**: 1.0
 
-__Output Files:__
+## Description
 
-Files: Heatmaps of the correlation matrices of the respective input matrices.
-Format: PNG images.
-Location: Stored within the output folder.
+The "A1 - Matrices" script is designed to analyze gene expression data quantified in Reads Per Kilobase Million (RPKM) of microRNAs across various cancer classes. It reads input data from tab-separated values (TSV) files, generates Pearson correlation matrices, visualizes these matrices as heatmaps, and compares the matrices between the two datasets with a Pearson Correlation Coefficient. This tool aims to reveal similarities and differences in miRNA expression across cancer types, facilitating a deeper understanding of cancer biology.
 
-__Usage:__
+## Dependencies
 
-To use this script, ensure all dependencies are installed and place your .tsv input files in the data folder. Run the script, and it will automatically generate heatmaps for each input file and save them in the output folder. The Pearson correlation coefficients of the correlations are printed to the console.
+- **Pandas**: For data reading and manipulation.
+- **Seaborn**: For generating advanced data visualizations, specifically heatmaps.
+- **Matplotlib**: For basic data visualization.
+- **Numpy**: For numerical computations.
 
-__Script:__
-The python script reads gene expression quantified in RPKM of microRNAs among various classes of Cancer from the 'matrix1' and 'matrix2' data files. It then generates a 12x12 pearson correlation matrix and a coinciding heatmap for each respective file. Finally, it then compares matrix 1 and matrix 2 with each other using a pearson correlation. 
+## Installation
+
+Ensure you have Python 3.11 installed in your Conda environment. Install the required dependencies using Conda by running the following commands in your terminal:
+
+```bash
+conda create --name myenv python=3.11 pandas seaborn matplotlib numpy
+conda activate myenv
+```
+
+## Input Data: 
+  - Gene Expression Matrices (```matrix1.txt``` & ```matrix2.txt```)
+    - **Desc**: Gene expression data quantified in RPKM of microRNAs among various classes of cancer
+    - **Format**: Tab-Separated Value (TSV) files
+    - **File Location**: Stored within the ```data``` folder
+## Output Data
+- Correlation Heatmaps of Gene Expression Matrices (```correlation_matrix1_heatmap.png``` & ```correlation_matrix2_heatmap.png```)
+    - **Desc**: Gene expression data quantified in RPKM of microRNAs among various classes of cancer
+    - **Format**: Tab-Separated Value (TSV) files
+    - **File Location**: Stored within the ```data``` folder
+
+*Both Input Files and Output Path are Configurable*
+
+## Assignment Description
+The script was developed to solve the following tasks:
+
+1. Generate a 12 x 12 Pearson correlation matrix for each miRNA expression across different cancer types dataset.
+2. Visualize these matrices as heatmaps to reveal similarities between cancers.
+3. Compute a Pearson correlation between the two original matrices to compare datasets directly.
