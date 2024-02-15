@@ -32,11 +32,12 @@ conda activate myenv
     - **Desc**: Gene expression data quantified in RPKM of microRNAs among various classes of cancer
     - **Format**: Tab-Separated Value (TSV) files
     - **File Location**: Stored within the ```data``` folder
+    
 ## Output Data
 - Correlation Heatmaps of Gene Expression Matrices (```correlation_matrix1_heatmap.png``` & ```correlation_matrix2_heatmap.png```)
-    - **Desc**: Gene expression data quantified in RPKM of microRNAs among various classes of cancer
-    - **Format**: Tab-Separated Value (TSV) files
-    - **File Location**: Stored within the ```data``` folder
+    - **Desc**: Seaborn Heatmaps generated from the Correlation Matrices generated from the Original Matrices
+    - **Format**: PNG (Portable Network Graphic) Images
+    - **File Location**: Stored within the ```output``` folder
 
 *Both Input Files and Output Path are Configurable*
 
