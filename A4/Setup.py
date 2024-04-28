@@ -1,7 +1,7 @@
 metadata = {
     'Author      ': 'Jay Annadurai',
     'Date        ': '22 Mar 2024',
-    'Project     ': 'A4-PSMPredictor',
+    'Project     ': 'A4-PSWMPredictor',
     'Version     ': 1.0,
     'Description ': 'Unzips BZ files in preparation for the main script'
 }
