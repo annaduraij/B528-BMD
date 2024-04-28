@@ -1,0 +1,9 @@
+Assignment 5:
+
+Write a script which can calculate the degree and clustering coefficient for every node (protein)
+in the human protein interaction network (attached). Now calculate the average clustering coefficient
+of the network. Finally, test whether the network has a scale-free structure by plotting the degree distribution?
+
+Now write another script which can calculate the shortest path lengths between every pair of nodes (proteins)
+in the attached files (two files are attached). Compare the path length distributions between the two protein
+sets using a wilcox test.
